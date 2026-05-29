@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multi-agent-legal-orchestrator"
+version = "0.1.0"
+description = "Multi-agent orchestration system for Chilean legal analysis (Anthropic SDK, no frameworks)."
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.105,<1",
+    "flask>=3.1,<4",
+    "python-dotenv>=1,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9,<10",
+    "ruff>=0.6",
+    "mypy>=1.8",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.setuptools.package-data]
+# Ship the mock corpus as package data alongside the retrieval module.
+"app.knowledge_base" = ["mock_data.json"]
+
+[tool.pytest.ini_options]
+# Put the project root on sys.path so tests import the `app` package without an
+# editable install and without any sys.path manipulation in the test files.
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+# Curated set: correctness + modern-Python + common bug patterns. BLE flags
+# blind `except` clauses; the one intentional boundary catch carries an inline
+# `# noqa: BLE001` with a justification. We deliberately omit the opinionated
+# exception-message rules (TRY003/EM10x), which don't reflect a best-practice
+# consensus and would force needless message-into-class refactors.
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RET", "BLE"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["app", "wsgi.py"]
+
+[[tool.mypy.overrides]]
+# Tests use lightweight SimpleNamespace stand-ins for SDK response objects;
+# strict typing there would add noise without catching real bugs.
+module = "tests.*"
+ignore_errors = true
