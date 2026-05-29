@@ -134,7 +134,7 @@ multi-agent-legal-orchestrator/
 │   ├── prompts.py              # System prompts (Spanish), one per component
 │   ├── conversation.py         # In-memory, per-session conversation history
 │   ├── api/
-│   │   ├── routes.py           # Blueprint: POST /query, GET /health
+│   │   ├── routes.py           # Blueprint: POST /query
 │   │   └── validation.py       # Query sanitization + session-id resolution
 │   ├── orchestrator/
 │   │   ├── models.py           # Typed dataclasses (records, citations, responses)

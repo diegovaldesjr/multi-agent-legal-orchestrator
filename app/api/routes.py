@@ -1,4 +1,4 @@
-"""API routes (Flask Blueprint): POST /query and GET /health."""
+"""API routes (Flask Blueprint): POST /query."""
 
 from __future__ import annotations
 
