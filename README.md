@@ -221,6 +221,9 @@ Supporting engineering decisions:
   `messages.create`).
 - **Client built once.** The real client is built lazily and cached behind a lock;
   tests inject a mock. The app boots with no key.
+- **Resilience.** Rate-limit and transient errors (429 / 5xx) are retried with
+  exponential backoff by the Anthropic SDK's built-in policy (`max_retries`); no
+  custom retry layer is added.
 - **Typed against the SDK.** Tool params, message turns, and response blocks use
   the SDK's own types (narrowed with `isinstance`); the package passes
   `mypy --strict`.
